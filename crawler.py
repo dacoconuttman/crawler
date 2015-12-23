@@ -4,26 +4,21 @@ import Queue
 import threading
 
 def findPages(url):
+    t = threading.currentThread()
+    print t
     print url
     return
 
-def getWebsites(filename):
-    websites = []
-    with open(filename, 'r') as f:
-        for line in f:
-            print line
-            websites.append(line)
-            if 'str' in line:
-                break
-    return websites
+websites = []
 
-siteList = getWebsites('9d3dfb739fc3-list+of+urls.csv')
+filename = '9d3dfb739fc3-list+of+urls.csv'
+with open(filename, 'r') as file:
+    for line in file.readlines():
+        websites +=  line.strip().split('\r')
 
 threads = []
 
-print len(siteList)
-
-for site in range(len(siteList)):
-    t = threading.Thread(target=findPages, args=(site,))
+for i in range(len(websites)):
+    t = threading.Thread(target=findPages, args=(websites[i],))
     threads.append(t)
     t.start()
